@@ -1,23 +1,45 @@
+import java.util.Scanner;
+
+
 public class bird {
-    public static void greet(){
-        System.out.println("Hello! I'm bird");
-        System.out.println("What can I do for you?");
+    public static void reply(String message){
+        System.out.println("    " + message);
     }
 
-    public static void line(){
-        System.out.println("____________________________________________________________");
+    public static void greet(){
+        printLine();
+        reply("Hello! I'm bird");
+        reply("What can I do for you?");
+        printLine();
+    }
+
+    public static void printLine(){
+        System.out.println("    " + "____________________________________________________________");
     }
 
     public static void bye(){
-        System.out.println("Bye. Hope to see you again soon!");
+        printLine();
+        reply("Bye. Hope to see you again soon!");
+        printLine();
+    }
+
+    public static void echo(String message){
+        printLine();
+        reply(message);
+        printLine();
     }
 
     public static void main(String[] args) {
-        line();
         greet();
-        line();
+        String line;
+        Scanner in = new Scanner(System.in);
+
+        line = in.nextLine();
+        while (!line.equals("bye")){
+            echo(line);
+            line = in.nextLine();
+        }
         bye();
-        line();
     }
 }
 
