@@ -23,20 +23,37 @@ public class bird {
         printLine();
     }
 
-    public static void echo(String message){
+
+    public static void printTasks(String[] taskList, int taskCount){
         printLine();
-        reply(message);
+        for (int i = 0; i < taskCount; i++){
+            reply(Integer.toString(i + 1) + ". " + taskList[i]);
+        }
         printLine();
+    }
+
+    public static void addTask(String[] taskList, String task, int taskCount){
+        printLine();
+        reply("added: " + task);
+        printLine();
+        taskList[taskCount] = task;
     }
 
     public static void main(String[] args) {
         greet();
         String line;
         Scanner in = new Scanner(System.in);
+        String[] taskList = new String[100];
+        int taskCount = 0;
 
         line = in.nextLine();
         while (!line.equals("bye")){
-            echo(line);
+            if (line.equals("list")) {
+                printTasks(taskList, taskCount);
+            } else {
+                addTask(taskList, line, taskCount);
+                taskCount++;
+            }
             line = in.nextLine();
         }
         bye();
