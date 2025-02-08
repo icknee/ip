@@ -1,0 +1,7 @@
+todo write books
+deadline hw1 /by monday 7pm
+event party /from 8pm /to the sun rises
+list
+mark 3
+list
+bye
