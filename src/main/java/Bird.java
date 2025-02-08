@@ -30,7 +30,6 @@ public class Bird {
         printLine();
     }
 
-
     public static void printTaskList(Task[] taskList, int taskCount) {
         printLine();
         for (int i = 0; i < taskCount; i++) {
@@ -74,19 +73,21 @@ public class Bird {
         printNewTaskAdded(taskCount, newEvents);
     }
 
-
-    public static void toggleTaskStatus(Task[] taskList, int taskNumber, boolean done) {
-        taskList[taskNumber - 1].setDone(done);
+    public static void markTaskAsDone(Task[] taskList, int taskNumber) {
+        taskList[taskNumber - 1].setDone(true);
         printLine();
-        if (done) {
-            printReply("Nice! I've marked this task as done:");
-        } else {
-            printReply("OK, I've marked this task as not done yet:");
-        }
-        printReply(taskList[taskNumber - 1].toString());
+        printReply("Nice! I've marked this task as done:");
+        printReply(INDENT + taskList[taskNumber - 1].toString());
         printLine();
     }
 
+    public static void markTaskAsNotDone(Task[] taskList, int taskNumber) {
+        taskList[taskNumber - 1].setDone(false);
+        printLine();
+        printReply("OK, I've marked this task as not done yet:");
+        printReply(INDENT + taskList[taskNumber - 1].toString());
+        printLine();
+    }
 
     public static void main(String[] args) {
         printGreeting();
@@ -104,9 +105,17 @@ public class Bird {
                 printTaskList(taskList, taskCount);
                 break;
             case "mark":
+                try {
+                    markTaskAsDone(taskList, Integer.parseInt(line.split(" ")[1]));
+                } catch (NullPointerException | NumberFormatException | ArrayIndexOutOfBoundsException e) {
+                    printLine();
+                    printReply("Invalid task number, please try again with numbers from 1 to " + taskCount);
+                    printLine();
+                }
+                break;
             case "unmark":
                 try {
-                    toggleTaskStatus(taskList, Integer.parseInt(line.split(" ")[1]), command.equals("mark"));
+                    markTaskAsNotDone(taskList, Integer.parseInt(line.split(" ")[1]));
                 } catch (NullPointerException | NumberFormatException | ArrayIndexOutOfBoundsException e) {
                     printLine();
                     printReply("Invalid task number, please try again with numbers from 1 to " + taskCount);
