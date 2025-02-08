@@ -14,5 +14,13 @@ public class Task {
     public void setDone(boolean isDone) {
         this.isDone = isDone;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String toString() {
+        return "[" + this.getStatusIcon() + "] " + this.getDescription();
+    }
 }
 
