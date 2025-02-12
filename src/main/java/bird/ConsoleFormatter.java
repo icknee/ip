@@ -1,3 +1,7 @@
+package bird;
+
+import bird.task.Task;
+
 public class ConsoleFormatter {
     private static final String INDENT = "  ";
     public static void printWithIndent(String message) {

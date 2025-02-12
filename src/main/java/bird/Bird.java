@@ -1,3 +1,10 @@
+package bird;
+
+import bird.task.Deadlines;
+import bird.task.Events;
+import bird.task.Task;
+import bird.task.ToDos;
+
 import java.util.Scanner;
 
 
