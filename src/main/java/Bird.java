@@ -3,94 +3,109 @@ import java.util.Scanner;
 
 public class Bird {
     private static final int MAX_TASKS = 100;
-    private static final String INDENT = "  ";
     private static final int TODO_DESCRIPTION_INDEX = 5;
     private static final int DEADLINE_DESCRIPTION_INDEX = 9;
     private static final int EVENT_DESCRIPTION_INDEX = 6;
 
 
-    public static void printReply(String message) {
-        System.out.println("\t" + message);
-    }
-
-    public static void printGreeting() {
-        printLine();
-        printReply("Hello! I'm bird");
-        printReply("What can I do for you?");
-        printLine();
-    }
-
-    public static void printLine() {
-        System.out.println("\t" + "____________________________________________________________");
-    }
-
-    public static void printGoodBye() {
-        printLine();
-        printReply("Bye. Hope to see you again soon!");
-        printLine();
-    }
-
-    public static void printTaskList(Task[] taskList, int taskCount) {
-        printLine();
-        for (int i = 0; i < taskCount; i++) {
-            printReply(i + 1 + ". " + taskList[i].toString());
+    public static void addTodos(Task[] taskList, String line, int taskCount) throws InvalidCommandException {
+        if (line.length() < 6) {
+            throw new InvalidCommandException("todo <task>");
         }
-        printLine();
-    }
-
-    private static void printNewTaskAdded(int taskCount, Task newTask) {
-        printLine();
-        printReply("task added!");
-        printReply(INDENT + newTask.toString());
-        printReply("you now have " + (taskCount + 1) + " tasks in the list");
-        printLine();
-    }
-
-    public static void addTodos(Task[] taskList, String line, int taskCount) {
         String description = line.substring(TODO_DESCRIPTION_INDEX);
         ToDos newToDos = new ToDos(description);
         taskList[taskCount] = newToDos;
-        printNewTaskAdded(taskCount, newToDos);
+        ConsoleFormatter.printNewTaskAdded(taskCount, newToDos);
     }
 
-    public static void addDeadlines(Task[] taskList, String line, int taskCount) {
-        int byIndex = line.indexOf("/");
-        String description = line.substring(DEADLINE_DESCRIPTION_INDEX, byIndex - 1);
-        String by = line.substring(byIndex + 4);
-        Deadlines newDeadlines = new Deadlines(description, by);
-        taskList[taskCount] = newDeadlines;
-        printNewTaskAdded(taskCount, newDeadlines);
+    public static void addDeadlines(Task[] taskList, String line, int taskCount) throws InvalidCommandException {
+        try {
+            int byIndex = line.indexOf("/");
+            String description = line.substring(DEADLINE_DESCRIPTION_INDEX, byIndex - 1);
+            String by = line.substring(byIndex + 4);
+            Deadlines newDeadlines = new Deadlines(description, by);
+            taskList[taskCount] = newDeadlines;
+            ConsoleFormatter.printNewTaskAdded(taskCount, newDeadlines);
+        } catch (Exception e) {
+            throw new InvalidCommandException("deadline <task> /by <time>");
+        }
     }
 
-    public static void addEvents(Task[] taskList, String line, int taskCount) {
-        int fromIndex = line.indexOf("/");
-        int toIndex = line.indexOf("/", fromIndex + 1);
-        String description = line.substring(EVENT_DESCRIPTION_INDEX, fromIndex - 1);
-        String from = line.substring(fromIndex + 6, toIndex - 1);
-        String to = line.substring(toIndex + 4);
-        Events newEvents = new Events(description, from, to);
-        taskList[taskCount] = newEvents;
-        printNewTaskAdded(taskCount, newEvents);
+    public static void addEvents(Task[] taskList, String line, int taskCount) throws InvalidCommandException {
+        try {
+            int fromIndex = line.indexOf("/");
+            int toIndex = line.indexOf("/", fromIndex + 1);
+            String description = line.substring(EVENT_DESCRIPTION_INDEX, fromIndex - 1);
+            String from = line.substring(fromIndex + 6, toIndex - 1);
+            String to = line.substring(toIndex + 4);
+            Events newEvents = new Events(description, from, to);
+            taskList[taskCount] = newEvents;
+            ConsoleFormatter.printNewTaskAdded(taskCount, newEvents);
+        } catch (Exception e) {
+            throw new InvalidCommandException("event <task> /from <time> /to <time>");
+        }
     }
 
-    public static void markTaskAsDone(Task[] taskList, int taskNumber) {
+    public static void markTaskAsDone(Task[] taskList, String enteredTaskNumber, int taskCount) throws InvalidCommandException {
+        int taskNumber;
+        try {
+            taskNumber = Integer.parseInt(enteredTaskNumber);
+        } catch (NumberFormatException e) {
+            throw new InvalidCommandException("Please enter a valid task number");
+        }
+        if (taskNumber < 1 || taskNumber > taskCount) {
+            throw new InvalidCommandException("Task does not exist");
+        }
         taskList[taskNumber - 1].setDone(true);
-        printLine();
-        printReply("Nice! I've marked this task as done:");
-        printReply(INDENT + taskList[taskNumber - 1].toString());
-        printLine();
+        ConsoleFormatter.printTaskAsDone(taskList[taskNumber - 1]);
     }
 
-    public static void markTaskAsNotDone(Task[] taskList, int taskNumber) {
+    public static void markTaskAsNotDone(Task[] taskList, String enteredTaskNumber, int taskCount) throws InvalidCommandException {
+        int taskNumber;
+        try {
+            taskNumber = Integer.parseInt(enteredTaskNumber);
+        } catch (NumberFormatException e) {
+            throw new InvalidCommandException("Please enter a valid task number");
+        }
+        if (taskNumber < 1 || taskNumber > taskCount) {
+            throw new InvalidCommandException("Task does not exist");
+        }
         taskList[taskNumber - 1].setDone(false);
-        printLine();
-        printReply("OK, I've marked this task as not done yet:");
-        printReply(INDENT + taskList[taskNumber - 1].toString());
-        printLine();
+        ConsoleFormatter.printTaskAsNotDone(taskList[taskNumber - 1]);
     }
+
+    private static int executeCommand(String command, Task[] taskList, int taskCount, String line) throws InvalidCommandException {
+        switch (command) {
+            case "list":
+                ConsoleFormatter.printTaskList(taskList, taskCount);
+                break;
+            case "mark":
+                markTaskAsDone(taskList, line.split(" ")[1], taskCount);
+                break;
+            case "unmark":
+                markTaskAsNotDone(taskList, line.split(" ")[1], taskCount);
+                break;
+            case "todo":
+                addTodos(taskList, line, taskCount);
+                taskCount++;
+                break;
+            case "deadline":
+                addDeadlines(taskList, line, taskCount);
+                taskCount++;
+                break;
+            case "event":
+                addEvents(taskList, line, taskCount);
+                taskCount++;
+                break;
+            default:
+                throw new InvalidCommandException("Unknown command: " + line + "\n" + "\t" + "try entering 'help' to see the list of commands!");
+        }
+        return taskCount;
+    }
+
 
     public static void main(String[] args) {
-        printGreeting();
+        ConsoleFormatter.printGreeting();
         String line;
         Scanner in = new Scanner(System.in);
         Task[] taskList = new Task[MAX_TASKS];
@@ -100,61 +115,16 @@ public class Bird {
         String command = line.split(" ")[0];
 
         while (!line.equals("bye")) {
-            switch (command) {
-            case "list":
-                printTaskList(taskList, taskCount);
-                break;
-            case "mark":
-                try {
-                    markTaskAsDone(taskList, Integer.parseInt(line.split(" ")[1]));
-                } catch (NullPointerException | NumberFormatException | ArrayIndexOutOfBoundsException e) {
-                    printLine();
-                    printReply("Invalid task number, please try again with numbers from 1 to " + taskCount);
-                    printLine();
-                }
-                break;
-            case "unmark":
-                try {
-                    markTaskAsNotDone(taskList, Integer.parseInt(line.split(" ")[1]));
-                } catch (NullPointerException | NumberFormatException | ArrayIndexOutOfBoundsException e) {
-                    printLine();
-                    printReply("Invalid task number, please try again with numbers from 1 to " + taskCount);
-                    printLine();
-                }
-                break;
-            case "todo":
-                addTodos(taskList, line, taskCount);
-                taskCount++;
-                break;
-            case "deadline":
-                try {
-                    addDeadlines(taskList, line, taskCount);
-                    taskCount++;
-                } catch (StringIndexOutOfBoundsException e) {
-                    printLine();
-                    printReply("deadline <task> /by <time>");
-                    printLine();
-                }
-                break;
-            case "event":
-                try {
-                    addEvents(taskList, line, taskCount);
-                    taskCount++;
-                } catch (StringIndexOutOfBoundsException e) {
-                    printLine();
-                    printReply("event <task> /from <time> /to <time>");
-                    printLine();
-                }
-                break;
-            default:
-                printLine();
-                printReply("Invalid command");
-                printLine();
+            try {
+                taskCount = executeCommand(command, taskList, taskCount, line);
+            } catch (InvalidCommandException e) {
+                ConsoleFormatter.printWithLines(e.getMessage());
             }
             line = in.nextLine();
             command = line.split(" ")[0];
         }
-        printGoodBye();
+        ConsoleFormatter.printGoodBye();
     }
 }
+
 
