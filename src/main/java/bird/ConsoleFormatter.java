@@ -26,7 +26,7 @@ public class ConsoleFormatter {
     }
 
     public static void printGoodBye() {
-        printWithLines("Bye. Hope to see you again soon!");
+        printWithLines("Bye bye!");
     }
 
     public static void printTaskList(Task[] taskList, int taskCount) {
