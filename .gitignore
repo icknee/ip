@@ -18,3 +18,4 @@ text-ui-test/EXPECTED-UNIX.TXT
 
 #data file with tasklist.txt
 /data/
+/text-ui-test/data/
