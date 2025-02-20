@@ -1,5 +1,7 @@
 package bird;
 
+import bird.datafile.FileManager;
+import bird.exceptions.InvalidCommandException;
 import bird.task.Task;
 import bird.task.TaskHandler;
 
@@ -14,30 +16,31 @@ public class CommandHandler {
                 break;
             case "mark":
                 TaskHandler.markTaskAsDone(taskList, line, taskCount);
-                FileHandler.saveFile(taskList);
+                FileManager.saveFile(taskList);
                 break;
             case "unmark":
                 TaskHandler.markTaskAsNotDone(taskList, line, taskCount);
-                FileHandler.saveFile(taskList);
+                FileManager.saveFile(taskList);
                 break;
             case "todo":
                 TaskHandler.addTodos(taskList, line, taskCount);
                 taskCount++;
-                FileHandler.saveFile(taskList);
+                FileManager.saveFile(taskList);
                 break;
             case "deadline":
                 TaskHandler.addDeadlines(taskList, line, taskCount);
                 taskCount++;
-                FileHandler.saveFile(taskList);
+                FileManager.saveFile(taskList);
                 break;
             case "event":
                 TaskHandler.addEvents(taskList, line, taskCount);
                 taskCount++;
-                FileHandler.saveFile(taskList);
+                FileManager.saveFile(taskList);
                 break;
             case "delete":
                 TaskHandler.deleteTask(taskList, line, taskCount);
                 taskCount--;
+                FileManager.saveFile(taskList);
                 break;
             default:
                 throw new InvalidCommandException("Unknown command: " + line + "\n" + "\t" + "try entering 'list' to see the list of tasks!");

@@ -1,11 +1,13 @@
 package bird;
 
+import bird.datafile.FileManager;
+import bird.exceptions.InvalidCommandException;
+import bird.exceptions.InvalidFileException;
 import bird.task.Task;
 
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.File;
@@ -18,7 +20,7 @@ public class Bird {
         File f = new File("data/tasklist.txt");
         if (!f.exists()) {
             try {
-                FileHandler.createFile();        // Create actual file
+                FileManager.createFile();        // Create actual file
             } catch (InvalidFileException e) {
                 ConsoleFormatter.printWithLines(e.getMessage());
                 return;
@@ -34,8 +36,8 @@ public class Bird {
 
         int taskCount = 0;
         try {
-            taskCount = FileHandler.getTaskCount();
-            taskList = FileHandler.loadFileToArray();
+            taskCount = FileManager.getTaskCount();
+            taskList = FileManager.loadFileToArray();
         } catch (FileNotFoundException | InvalidCommandException e) {
             ConsoleFormatter.printWithLines("Unable to load file");
         }
@@ -45,7 +47,7 @@ public class Bird {
         String command = line.split(" ")[0];
 
         try {
-            taskList = FileHandler.loadFileToArray();
+            taskList = FileManager.loadFileToArray();
         } catch (FileNotFoundException e) {
             ConsoleFormatter.printWithLines("Data file cannot be found");
             return;

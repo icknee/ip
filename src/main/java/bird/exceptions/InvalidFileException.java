@@ -1,4 +1,4 @@
-package bird;
+package bird.exceptions;
 
 public class InvalidFileException extends RuntimeException {
     public InvalidFileException(String message) {

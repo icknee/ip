@@ -1,7 +1,7 @@
 package bird.task;
 
 import bird.ConsoleFormatter;
-import bird.InvalidCommandException;
+import bird.exceptions.InvalidCommandException;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package bird;
+package bird.exceptions;
 
 public class InvalidCommandException extends Exception{
     public InvalidCommandException(String message){
