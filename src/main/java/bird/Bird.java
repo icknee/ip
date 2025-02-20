@@ -1,6 +1,8 @@
 package bird;
 
 import bird.task.Task;
+
+import java.util.ArrayList;
 import java.util.Scanner;
 
 
@@ -11,7 +13,8 @@ public class Bird {
         ConsoleFormatter.printGreeting();
         String line;
         Scanner in = new Scanner(System.in);
-        Task[] taskList = new Task[MAX_TASKS];
+        //Task[] taskList = new Task[MAX_TASKS];
+        ArrayList<Task> taskList = new ArrayList<>();
         int taskCount = 0;
 
         line = in.nextLine();

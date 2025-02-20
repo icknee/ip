@@ -4,4 +4,9 @@ event party /from 8pm /to the sun rises
 list
 mark 3
 list
+delete 2
+list
+deadline read chp 1 /by fri
+delete 1
+list
 bye

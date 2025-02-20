@@ -2,6 +2,8 @@ package bird;
 
 import bird.task.Task;
 
+import java.util.ArrayList;
+
 public class ConsoleFormatter {
     private static final String INDENT = "  ";
     public static void printWithIndent(String message) {
@@ -29,10 +31,10 @@ public class ConsoleFormatter {
         printWithLines("Bye bye!");
     }
 
-    public static void printTaskList(Task[] taskList, int taskCount) {
+    public static void printTaskList(ArrayList<Task> taskList, int taskCount) {
         printLine();
         for (int i = 0; i < taskCount; i++) {
-            printWithIndent(i + 1 + ". " + taskList[i].toString());
+            printWithIndent(i + 1 + ". " + taskList.get(i).toString());
         }
         printLine();
     }
@@ -59,4 +61,11 @@ public class ConsoleFormatter {
         printLine();
     }
 
+    public static void printTaskAsDeleted(Task deletedTask, int taskCount) {
+        printLine();
+        printWithIndent("task deleted!");
+        printWithIndent(deletedTask.toString());
+        printWithIndent("now you have " + (taskCount - 1) + " tasks in the list");
+        printLine();
+    }
 }
