@@ -1,11 +1,18 @@
 package bird;
 
 import bird.task.Task;
+import bird.task.TaskList;
 
-import java.util.ArrayList;
+import java.util.Scanner;
 
-public class ConsoleFormatter {
+public class Ui {
     private static final String INDENT = "  ";
+    private Scanner in = new Scanner(System.in);
+
+    public String readCommand() {
+        String line = in.nextLine();
+        return line;
+    }
     public static void printWithIndent(String message) {
         System.out.println("\t" + message);
     }
@@ -16,9 +23,18 @@ public class ConsoleFormatter {
         printLine();
     }
 
+    public static void printBird() {
+        System.out.println("      .-.\n" +
+                "     /'v'\\\n" +
+                "    (/   \\)\n" +
+                "   ='=\"=\"===<\n" +
+                "      |_|");
+    }
+
     public static void printGreeting() {
         printLine();
         printWithIndent("Hello! I'm bird");
+        printBird();
         printWithIndent("What can I do for you?");
         printLine();
     }
@@ -31,7 +47,7 @@ public class ConsoleFormatter {
         printWithLines("Bye bye!");
     }
 
-    public static void printTaskList(ArrayList<Task> taskList, int taskCount) {
+    public static void printTaskList(TaskList taskList, Integer taskCount) {
         printLine();
         for (int i = 0; i < taskCount; i++) {
             printWithIndent(i + 1 + ". " + taskList.get(i).toString());

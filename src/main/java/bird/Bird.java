@@ -1,72 +1,53 @@
 package bird;
 
-import bird.datafile.FileManager;
+import bird.commands.Command;
+import bird.storage.Storage;
 import bird.exceptions.InvalidCommandException;
-import bird.exceptions.InvalidFileException;
-import bird.task.Task;
+import bird.task.TaskList;
 
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Scanner;
-import java.io.File;
 
 
 public class Bird {
-    private static final int MAX_TASKS = 100;
+    private Storage storage;
+    private TaskList taskList;
+    private Ui ui;
 
-    public static void main(String[] args) {
-        File f = new File("data/tasklist.txt");
-        if (!f.exists()) {
-            try {
-                FileManager.createFile();        // Create actual file
-            } catch (InvalidFileException e) {
-                ConsoleFormatter.printWithLines(e.getMessage());
-                return;
-            }
-        }
-
-
-        ConsoleFormatter.printGreeting();
-        String line;
-        Scanner in = new Scanner(System.in);
-
-        ArrayList<Task> taskList = new ArrayList<Task>();
-
-        int taskCount = 0;
+    public Bird(String filePath) {
+        ui = new Ui();
+        storage = new Storage(filePath);
         try {
-            taskCount = FileManager.getTaskCount();
-            taskList = FileManager.loadFileToArray();
+            taskList = new TaskList(storage.loadFileToArray());
+            taskList.setTaskCount(storage.getTaskCount());
         } catch (FileNotFoundException | InvalidCommandException e) {
-            ConsoleFormatter.printWithLines("Unable to load file");
+            Ui.printWithLines(e.getMessage());
         }
+    }
 
 
-        line = in.nextLine();
-        String command = line.split(" ")[0];
-
-        try {
-            taskList = FileManager.loadFileToArray();
-        } catch (FileNotFoundException e) {
-            ConsoleFormatter.printWithLines("Data file cannot be found");
-            return;
-        } catch (InvalidCommandException e) {
-            ConsoleFormatter.printWithLines("Data file is likely to be corrupted");
-        }
-
-        while (!line.equals("bye")) {
+    public void run() {
+        Ui.printGreeting();
+        boolean isExit = false;
+        while (!isExit) {
+            String fullCommand = ui.readCommand();
+            Command c = null;
             try {
-                taskCount = CommandHandler.executeCommand(command, taskList, taskCount, line);
-            } catch (InvalidCommandException e) {
-                ConsoleFormatter.printWithLines(e.getMessage());
-            } catch (IOException e) {
-                ConsoleFormatter.printWithLines("Unable to save to file");
+                c = Parser.parse(fullCommand);
+                c.execute(taskList, storage);
+            } catch (InvalidCommandException | IOException e) {
+                Ui.printWithLines(e.getMessage());
             }
-            line = in.nextLine();
-            command = line.split(" ")[0];
+            try {
+                isExit = c.isExit();
+            } catch (NullPointerException e) {
+                continue;
+            }
         }
-        ConsoleFormatter.printGoodBye();
+    }
+    public static void main(String[] args) {
+        new Bird("data/tasklist.txt").run();
     }
 }
 
