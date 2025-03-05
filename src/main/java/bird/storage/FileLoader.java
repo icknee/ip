@@ -1,4 +1,4 @@
-package bird.datafile;
+package bird.storage;
 
 import bird.exceptions.InvalidCommandException;
 import bird.exceptions.InvalidFileException;

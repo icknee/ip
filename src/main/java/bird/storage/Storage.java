@@ -1,4 +1,4 @@
-package bird.datafile;
+package bird.storage;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -10,15 +10,20 @@ import java.util.Scanner;
 import bird.exceptions.InvalidCommandException;
 import bird.exceptions.InvalidFileException;
 import bird.task.*;
-import bird.datafile.FileSaver;
 
-import static bird.datafile.FileLoader.lineToArray;
+import static bird.storage.FileLoader.lineToArray;
 
 
-public class FileManager {
+public class Storage {
+    private String filepath;
 
-    public static void createFile() {
-        File f = new File("./data/tasklist.txt");
+    public Storage(String filepath) {
+        this.filepath = filepath;
+        createFile();
+    }
+
+    public void createFile() {
+        File f = new File(filepath);
         try {
             f.getParentFile().mkdirs(); // Create parent directories
             f.createNewFile();          // Create actual file
@@ -27,14 +32,14 @@ public class FileManager {
         }
     }
 
-    private static void clearFile() throws IOException {
-        FileWriter fw = new FileWriter("./data/tasklist.txt");
+    private void clearFile() throws IOException {
+        FileWriter fw = new FileWriter(filepath);
         fw.close();
     }
 
-    public static void saveFile(ArrayList<Task> taskList) throws IOException {
-        clearFile();
-        for (int i = 0; i < taskList.size(); i++) {
+    public void saveFile(TaskList taskList, Storage storage) throws IOException {
+        storage.clearFile();
+        for (int i = 0; i < taskList.getTaskCount(); i++) {
             if (taskList.get(i) instanceof ToDos) {
                 FileSaver.saveToDoToFile((ToDos) taskList.get(i));
             } else if (taskList.get(i) instanceof Deadlines) {
@@ -46,9 +51,9 @@ public class FileManager {
     }
 
 
-    public static ArrayList<Task> loadFileToArray() throws FileNotFoundException, InvalidCommandException {
+    public ArrayList<Task> loadFileToArray() throws FileNotFoundException, InvalidCommandException {
         ArrayList<Task> taskList = new ArrayList<Task>();
-        File f = new File("data/tasklist.txt");
+        File f = new File(filepath);
         Scanner s = new Scanner(f);
         while (s.hasNext()) {
             lineToArray(taskList, s.nextLine());
@@ -56,9 +61,9 @@ public class FileManager {
         return taskList;
     }
 
-    public static int getTaskCount() throws FileNotFoundException {
+    public int getTaskCount() throws FileNotFoundException {
         int taskCount = 0;
-        File f = new File("data/tasklist.txt");
+        File f = new File(filepath);
         Scanner s = new Scanner(f);
         while (s.hasNext() && s.nextLine() != "") {
             taskCount++;
