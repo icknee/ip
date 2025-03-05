@@ -67,6 +67,15 @@ public class Parser {
             case "bye":
                 c = new ExitCommand();
                 break;
+            case "find":
+                String keyword;
+                try {
+                    keyword = fullCommand.split(" ")[1];
+                } catch (Exception e) {
+                    throw new InvalidCommandException("find <keyword>");
+                }
+                c = new FindCommand(keyword);
+                break;
             default:
                 throw new InvalidCommandException("Unknown command: " + fullCommand + "\n" + "\t" + "try entering 'list' to see the list of tasks!");
         }
