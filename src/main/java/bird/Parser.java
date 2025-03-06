@@ -4,10 +4,45 @@ import bird.commands.*;
 import bird.exceptions.InvalidCommandException;
 import bird.task.Deadlines;
 
+/**
+ * The Parser class is responsible for converting raw user input into executable Command objects.
+ *  This class supports a variety of commands including:
+ *
+ *  <ul>
+ *  <li>"list" - to display the list of tasks.</li>
+ *  <li>"mark" and "unmark" - to set a task's completion status, based on a valid task number.</li>
+ *  <li>"todo" - to add a simple todo task, requiring a task description.</li>
+ *  <li>"deadline" - to add a task with a deadline, expecting a description and a "/by" time.</li>
+ *  <li>"event" - to add an event task, expecting a description along with "/from" and "/to" times.</li>
+ *  <li>"delete" - to remove a task, requiring a valid task number.</li>
+ *  <li>"bye" - to exit the application.</li>
+ *  </ul>
+ *  If the input does not follow the expected format, an {@code InvalidCommandException} is thrown.
+ */
+
 public class Parser {
     private static final int TODO_DESCRIPTION_INDEX = 5;
     private static final int DEADLINE_DESCRIPTION_INDEX = 9;
     private static final int EVENT_DESCRIPTION_INDEX = 6;
+
+    /**
+     * Parses the full command string input by the user and returns the corresponding Command object.
+     * The method extracts the action keyword from the input and, depending on the command type,
+     * parses additional arguments as necessary. It supports commands such as:
+     * <ul>
+     *   <li>"list" - returns a ListCommand.</li>
+     *   <li>"mark" / "unmark" - returns a MarkCommand with the specified task number.</li>
+     *   <li>"todo" - returns an AddCommand for a todo task using the task description.</li>
+     *   <li>"deadline" - returns an AddCommand for a deadline task using the task description and deadline time.</li>
+     *   <li>"event" - returns an AddCommand for an event task using the task description, start time, and end time.</li>
+     *   <li>"delete" - returns a DeleteCommand with the task number to be removed.</li>
+     *   <li>"bye" - returns an ExitCommand to terminate the application.</li>
+     * </ul>
+
+     * @param fullCommand the complete command string entered by the user.
+     * @return the corresponding Command object based on the parsed input.
+     * @throws InvalidCommandException if the command is unknown, incomplete, or improperly formatted.
+     */
 
     public static Command parse(String fullCommand) throws InvalidCommandException {
         String action = fullCommand.split(" ")[0];
