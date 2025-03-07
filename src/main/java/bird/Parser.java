@@ -6,17 +6,6 @@ import bird.task.Deadlines;
 
 /**
  * The Parser class is responsible for converting raw user input into executable Command objects.
- *  This class supports a variety of commands including:
- *
- *  <ul>
- *  <li>"list" - to display the list of tasks.</li>
- *  <li>"mark" and "unmark" - to set a task's completion status, based on a valid task number.</li>
- *  <li>"todo" - to add a simple todo task, requiring a task description.</li>
- *  <li>"deadline" - to add a task with a deadline, expecting a description and a "/by" time.</li>
- *  <li>"event" - to add an event task, expecting a description along with "/from" and "/to" times.</li>
- *  <li>"delete" - to remove a task, requiring a valid task number.</li>
- *  <li>"bye" - to exit the application.</li>
- *  </ul>
  *  If the input does not follow the expected format, an {@code InvalidCommandException} is thrown.
  */
 
@@ -37,6 +26,7 @@ public class Parser {
      *   <li>"event" - returns an AddCommand for an event task using the task description, start time, and end time.</li>
      *   <li>"delete" - returns a DeleteCommand with the task number to be removed.</li>
      *   <li>"bye" - returns an ExitCommand to terminate the application.</li>
+     *   <li>"find" - returns a FindCommand with the specified keyword.</li>
      * </ul>
 
      * @param fullCommand the complete command string entered by the user.
