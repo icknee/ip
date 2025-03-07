@@ -52,11 +52,11 @@ public class Ui {
      */
 
     public static void printBird() {
-        System.out.println("      .-.\n" +
-                "     /'v'\\\n" +
-                "    (/   \\)\n" +
-                "   ='=\"=\"===<\n" +
-                "      |_|");
+        System.out.println("\t      .-.\n" +
+                "\t     /'v'\\\n" +
+                "\t    (/   \\)\n" +
+                "\t   ='=\"=\"===<\n" +
+                "\t      |_|");
     }
 
     /**
