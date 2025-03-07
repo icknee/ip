@@ -86,17 +86,17 @@ public class AddCommand extends Command {
     public void execute(TaskList taskList, Storage storage) throws IOException, InvalidCommandException {
         Task newTask;
         switch (type) {
-            case "ToDos":
-                newTask = new ToDos(description);
-                break;
-            case "Deadlines":
-                newTask = new Deadlines(description, by);
-                break;
-            case "Events":
-                newTask = new Events(description, from, to);
-                break;
-            default:
-                throw new InvalidCommandException("Error adding new task");
+        case "ToDos":
+            newTask = new ToDos(description);
+            break;
+        case "Deadlines":
+            newTask = new Deadlines(description, by);
+            break;
+        case "Events":
+            newTask = new Events(description, from, to);
+            break;
+        default:
+            throw new InvalidCommandException("Error adding new task");
         }
         taskList.add(newTask);
         Ui.printNewTaskAdded(taskList.getTaskCount(), newTask);

@@ -11,7 +11,7 @@ import java.util.Scanner;
  */
 
 public class Ui {
-    private static final String INDENT = "  ";
+    public static final String INDENT = "  ";
     private Scanner in = new Scanner(System.in);
 
     /**
@@ -117,7 +117,11 @@ public class Ui {
         printLine();
         printWithIndent("task added!");
         printWithIndent(INDENT + newTask.toString());
-        printWithIndent("you now have " + (taskCount + 1) + " tasks in the list");
+        if (taskCount == 0) {
+            printWithIndent("you now have 1 task in the list");
+        } else {
+            printWithIndent("you now have " + (taskCount + 1) + " tasks in the list");
+        }
         printLine();
     }
 
@@ -160,8 +164,12 @@ public class Ui {
     public static void printTaskAsDeleted(Task deletedTask, int taskCount) {
         printLine();
         printWithIndent("task deleted!");
-        printWithIndent(deletedTask.toString());
-        printWithIndent("now you have " + (taskCount - 1) + " tasks in the list");
+        printWithIndent(INDENT + deletedTask.toString());
+        if (taskCount == 2) {
+            printWithIndent("you now have 1 task in the list");
+        } else {
+            printWithIndent("you now have " + (taskCount - 1) + " tasks in the list");
+        }
         printLine();
     }
 }

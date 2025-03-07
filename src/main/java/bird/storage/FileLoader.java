@@ -38,17 +38,17 @@ public class FileLoader {
         char taskType = line.charAt(0);
         try {
             switch (taskType) {
-                case 'T':
-                    loadToDoToArray(taskList, line);
-                    break;
-                case 'D':
-                    loadDeadlineToArray(taskList, line);
-                    break;
-                case 'E':
-                    loadEventToArray(taskList, line);
-                    break;
-                default:
-                    throw new InvalidFileException("File is likely to be corrupted.");
+            case 'T':
+                loadToDoToArray(taskList, line);
+                break;
+            case 'D':
+                loadDeadlineToArray(taskList, line);
+                break;
+            case 'E':
+                loadEventToArray(taskList, line);
+                break;
+            default:
+                throw new InvalidFileException("File is likely to be corrupted.");
             }
         } catch (Exception e) {
             throw new InvalidFileException("Error while parsing file");
