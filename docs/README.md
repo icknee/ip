@@ -201,6 +201,7 @@ Bird data are saved automatically as a txt file `[JAR file location]/data/taskli
 Advanced users are welcome to update data directly by editing that data file. However, the formating
 has to be followed in order to load the data properly. Changes made by editing the data file will only
 be reflected when you restart the program.  
+>Note: If corrupted file warning shows up, you have to edit the data file directly by changing the content to the correct format or clearing the file.
   
 ## Command Summary
 

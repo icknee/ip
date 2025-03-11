@@ -34,7 +34,7 @@ public class FileLoader {
      * @throws InvalidFileException if an error occurs while parsing the line or if the file format is corrupted.
      */
 
-    public static void lineToArray(ArrayList<Task> taskList, String line) throws InvalidCommandException {
+    public static void lineToArray(ArrayList<Task> taskList, String line) throws InvalidFileException {
         char taskType = line.charAt(0);
         try {
             switch (taskType) {
@@ -48,10 +48,10 @@ public class FileLoader {
                 loadEventToArray(taskList, line);
                 break;
             default:
-                throw new InvalidFileException("File is likely to be corrupted.");
+                throw new InvalidFileException("Data file is likely to be corrupted.");
             }
         } catch (Exception e) {
-            throw new InvalidFileException("Error while parsing file");
+            throw new InvalidFileException("Data file is likely to be corrupted.");
         }
     }
 

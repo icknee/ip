@@ -1,6 +1,7 @@
 package bird;
 
 import bird.commands.Command;
+import bird.exceptions.InvalidFileException;
 import bird.storage.Storage;
 import bird.exceptions.InvalidCommandException;
 import bird.task.TaskList;
@@ -80,7 +81,11 @@ public class Bird {
      */
 
     public static void main(String[] args) {
-        new Bird("data/tasklist.txt").run();
+        try {
+            new Bird("data/tasklist.txt").run();
+        } catch (InvalidFileException e) {
+            Ui.printWithLines(e.getMessage());
+        }
     }
 }
 
