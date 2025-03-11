@@ -15,7 +15,8 @@ public class Parser {
     private static final int EVENT_DESCRIPTION_INDEX = 6;
     public static final int MIN_MARK_COMMAND_LENGTH = 6;
     public static final int MIN_TODO_COMMAND_LENGTH = 6;
-    private static final int MIN_MARK_DELETE_LENGTH = 8;
+    private static final int MIN_DELETE_COMMAND_LENGTH = 8;
+    private static final int MIN_FIND_COMMAND_LENGTH = 6;
 
     /**
      * Parses the full command string input by the user and returns the corresponding Command object.
@@ -81,7 +82,7 @@ public class Parser {
             }
             break;
         case "delete":
-            if (fullCommand.length() < MIN_MARK_DELETE_LENGTH) {
+            if (fullCommand.length() < MIN_DELETE_COMMAND_LENGTH) {
                 throw new InvalidCommandException("delete <task number>");
             }
             c = new DeleteCommand(fullCommand.substring(fullCommand.indexOf(" ") + 1));
@@ -90,6 +91,9 @@ public class Parser {
             c = new ExitCommand();
             break;
         case "find":
+            if (fullCommand.length() < MIN_FIND_COMMAND_LENGTH) {
+                throw new InvalidCommandException("find <keyword>");
+            }
             String keyword;
             try {
                 keyword = fullCommand.substring(fullCommand.indexOf(" ") + 1);
