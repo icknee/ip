@@ -21,7 +21,7 @@ via a txt file.
   - [Delete](#delete)
   - [Find](#find)
   - [Exit](#exit)
-  - [Saving the data](#saving-the-data-)
+  - [Saving the data](#saving-the-data)
   - [Editing the data file](#editing-the-data-file)
 - [Command Summary](#Command-Summary)
 
@@ -98,6 +98,8 @@ you now have 3 tasks in the list
 View the lists of tasks.
 
 Format: `list`
+>Note: any string that is written after `list` will be ignored.  
+> e.g. `list random string` will be treated as `list`
 
 The output should reflect the tasks stored in the file.
 
@@ -182,6 +184,8 @@ Here are the tasks containing quiz:
 Exit the program.
 
 Format: `bye`  
+>Note: any string that is written after `bye` will be ignored.  
+> e.g. `bye random string` will be treated as `bye`  
 
 The program should exit after printing out a farewell message.
 ```

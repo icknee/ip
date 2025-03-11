@@ -48,7 +48,7 @@ public class Parser {
             if (fullCommand.length() < MIN_MARK_COMMAND_LENGTH) {
                 throw new InvalidCommandException("mark <task number>");
             }
-            c = new MarkCommand((action.equals("mark")), fullCommand.split(" ")[1]);
+            c = new MarkCommand((action.equals("mark")), fullCommand.substring(fullCommand.indexOf(" ") + 1));
             break;
         case "todo":
             if (fullCommand.length() < MIN_TODO_COMMAND_LENGTH) {
@@ -84,7 +84,7 @@ public class Parser {
             if (fullCommand.length() < MIN_MARK_DELETE_LENGTH) {
                 throw new InvalidCommandException("delete <task number>");
             }
-            c = new DeleteCommand(fullCommand.split(" ")[1]);
+            c = new DeleteCommand(fullCommand.substring(fullCommand.indexOf(" ") + 1));
             break;
         case "bye":
             c = new ExitCommand();
@@ -92,7 +92,7 @@ public class Parser {
         case "find":
             String keyword;
             try {
-                keyword = fullCommand.split(" ")[1];
+                keyword = fullCommand.substring(fullCommand.indexOf(" ") + 1);
             } catch (Exception e) {
                 throw new InvalidCommandException("find <keyword>");
             }
