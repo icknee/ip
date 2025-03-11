@@ -19,10 +19,16 @@ public class DeleteCommand extends Command {
     /**
      * Constructs a DeleteCommand with the specified task number.
      *
-     * @param taskNumber the 1-indexed position of the task to be deleted.
+     * @param taskNumberString the 1-indexed position of the task to be deleted.
      */
 
-    public DeleteCommand(int taskNumber) {
+    public DeleteCommand(String taskNumberString) throws InvalidCommandException {
+        int taskNumber;
+        try {
+            taskNumber = Integer.parseInt(taskNumberString);
+        } catch (Exception e) {
+            throw new InvalidCommandException("Please enter a valid task number");
+        }
         this.taskNumber = taskNumber;
     }
 
@@ -31,7 +37,7 @@ public class DeleteCommand extends Command {
      * The method performs the following operations:
      * <ol>
      *     <li>Validates that the provided task number is within the valid range of existing tasks.</li>
-     *     <li>If the task number is invalid, an {@link bird.exceptions.InvalidCommandException} is thrown.</li>
+     *     <li>If the task number is invalid, an {@link InvalidCommandException} is thrown.</li>
      *     <li>If valid, prints a confirmation message that the task is deleted.</li>
      *     <li>Removes the task from the TaskList.</li>
      *     <li>Updates the task count.</li>

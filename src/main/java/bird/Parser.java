@@ -13,6 +13,9 @@ public class Parser {
     private static final int TODO_DESCRIPTION_INDEX = 5;
     private static final int DEADLINE_DESCRIPTION_INDEX = 9;
     private static final int EVENT_DESCRIPTION_INDEX = 6;
+    public static final int MIN_MARK_COMMAND_LENGTH = 6;
+    public static final int MIN_TODO_COMMAND_LENGTH = 6;
+    private static final int MIN_MARK_DELETE_LENGTH = 8;
 
     /**
      * Parses the full command string input by the user and returns the corresponding Command object.
@@ -42,16 +45,13 @@ public class Parser {
             c = new ListCommand();
             break;
         case "mark", "unmark":
-            int markTaskNumber;
-            try {
-                markTaskNumber = Integer.parseInt(fullCommand.split(" ")[1]);
-            } catch (Exception e) {
-                throw new InvalidCommandException("Please enter a valid task number");
+            if (fullCommand.length() < MIN_MARK_COMMAND_LENGTH) {
+                throw new InvalidCommandException("mark <task number>");
             }
-            c = new MarkCommand((action.equals("mark")), markTaskNumber);
+            c = new MarkCommand((action.equals("mark")), fullCommand.split(" ")[1]);
             break;
         case "todo":
-            if (fullCommand.length() < 6) {
+            if (fullCommand.length() < MIN_TODO_COMMAND_LENGTH) {
                 throw new InvalidCommandException("todo <task>");
             }
             String toDoDescription = fullCommand.substring(TODO_DESCRIPTION_INDEX);
@@ -81,13 +81,10 @@ public class Parser {
             }
             break;
         case "delete":
-            int taskNumber;
-            try {
-                taskNumber = Integer.parseInt(fullCommand.split(" ")[1]);
-            } catch (Exception e) {
-                throw new InvalidCommandException("Please enter a valid task number");
+            if (fullCommand.length() < MIN_MARK_DELETE_LENGTH) {
+                throw new InvalidCommandException("delete <task number>");
             }
-            c = new DeleteCommand(taskNumber);
+            c = new DeleteCommand(fullCommand.split(" ")[1]);
             break;
         case "bye":
             c = new ExitCommand();

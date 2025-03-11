@@ -21,12 +21,18 @@ public class MarkCommand extends Command {
      * Constructs a MarkCommand with the specified status and task number.
      *
      * @param isDone     the status to set for the task; {@code true} marks it as done, {@code false} marks it as not done.
-     * @param taskNumber the 1-indexed position of the task in the TaskList.
+     * @param taskNumberString the 1-indexed position of the task in the TaskList.
      */
 
-    public MarkCommand(boolean isDone, int taskNumber) {
+    public MarkCommand(boolean isDone, String taskNumberString) throws InvalidCommandException {
         this.isDone = isDone;
-        this.taskNumber = taskNumber;
+        int TaskNumber;
+        try {
+            TaskNumber = Integer.parseInt(taskNumberString);
+        } catch (Exception e) {
+            throw new InvalidCommandException("Please enter a valid task number");
+        }
+        this.taskNumber = TaskNumber;
     }
 
     /**
