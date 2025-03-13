@@ -60,9 +60,9 @@ public class Parser {
             break;
         case "deadline":
             try {
-                int byIndex = fullCommand.indexOf("/");
-                String deadlineDescription = fullCommand.substring(DEADLINE_DESCRIPTION_INDEX, byIndex - 1);
-                String by = fullCommand.substring(byIndex + 4);
+                int byIndex = fullCommand.indexOf(" /by ");
+                String deadlineDescription = fullCommand.substring(DEADLINE_DESCRIPTION_INDEX, byIndex);
+                String by = fullCommand.substring(byIndex + " /by ".length());
                 Deadlines newDeadlines = new Deadlines(deadlineDescription, by);
                 c = new AddCommand(deadlineDescription, by);
             } catch (Exception e) {
@@ -71,11 +71,11 @@ public class Parser {
             break;
         case "event":
             try {
-                int fromIndex = fullCommand.indexOf("/");
-                int toIndex = fullCommand.indexOf("/", fromIndex + 1);
-                String eventDescription = fullCommand.substring(EVENT_DESCRIPTION_INDEX, fromIndex - 1);
-                String eventFrom = fullCommand.substring(fromIndex + 6, toIndex - 1);
-                String eventTo = fullCommand.substring(toIndex + 4);
+                int fromIndex = fullCommand.indexOf(" /from ");
+                int toIndex = fullCommand.indexOf(" /to " , fromIndex + 1);
+                String eventDescription = fullCommand.substring(EVENT_DESCRIPTION_INDEX, fromIndex);
+                String eventFrom = fullCommand.substring(fromIndex + " /from ".length(), toIndex);
+                String eventTo = fullCommand.substring(toIndex + " /to ".length());
                 c = new AddCommand(eventDescription, eventFrom, eventTo);
             } catch (Exception e) {
                 throw new InvalidCommandException("event <task> /from <time> /to <time>");
